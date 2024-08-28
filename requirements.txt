@@ -1,3 +1,5 @@
 requests
 scrapy
 ipython
+python-dotenv
+psycopg2

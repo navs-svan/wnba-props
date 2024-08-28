@@ -7,6 +7,25 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+
+# GET POSTGRES SETTINGS
+
+import os
+from dotenv import load_dotenv
+from pathlib import Path
+
+filepath = Path().resolve()
+
+dotenv_path = filepath / ".env"
+load_dotenv(dotenv_path)
+
+DB_PASS = os.environ.get("DB_PASS")
+DB_HOST = os.environ.get("DB_HOST")
+DB_USER = os.environ.get("DB_USER")
+DB_DATA = os.environ.get("DB_DATA")
+
+
+
 BOT_NAME = "WNBA_scraper"
 
 SPIDER_MODULES = ["WNBA_scraper.spiders"]
@@ -63,9 +82,9 @@ CONCURRENT_REQUESTS_PER_DOMAIN = 16
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "WNBA_scraper.pipelines.WnbaScraperPipeline": 300,
-#}
+ITEM_PIPELINES = {
+   "WNBA_scraper.pipelines.WnbaScraperPipeline": 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
