@@ -16,7 +16,7 @@ class PlayerProps(scrapy.Item):
     name = scrapy.Field()
     minutes = scrapy.Field()
     field_goals = scrapy.Field()
-    fg_attemps = scrapy.Field()
+    fg_attempts = scrapy.Field()
     fg_percent = scrapy.Field()
     fg_three = scrapy.Field()
     fg_three_attempts = scrapy.Field()

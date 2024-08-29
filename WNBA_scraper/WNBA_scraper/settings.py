@@ -84,6 +84,7 @@ CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    "WNBA_scraper.pipelines.WnbaScraperPipeline": 300,
+   "WNBA_scraper.pipelines.PostgresPipeline": 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -9,7 +9,7 @@ class BallspiderSpider(scrapy.Spider):
 
     def parse(self, response):
         rows = response.css("table#schedule tbody tr")
-        rows = rows[0:2]
+        rows = rows[0:1]
         for row in rows:
             boxscore_url = row.css('[data-stat="box_score_text"] a::attr(href)').get()
             # boxscore_url = "www.basketball-reference.com" + relative_url
@@ -46,7 +46,7 @@ class BallspiderSpider(scrapy.Spider):
                 props["name"] = basic.css("th a::text").get()
                 props["minutes"] = basic.css('[data-stat="mp"]::text').get()
                 props["field_goals"] = basic.css('[data-stat="fg"]::text').get()
-                props["fg_attemps"] = basic.css('[data-stat="fga"]::text').get()
+                props["fg_attempts"] = basic.css('[data-stat="fga"]::text').get()
                 props["fg_percent"] = basic.css('[data-stat="fg_pct"]::text').get()
                 props["fg_three"] = basic.css('[data-stat="fg3"]::text').get()
                 props["fg_three_attempts"] = basic.css('[data-stat="fg3a"]::text').get()
