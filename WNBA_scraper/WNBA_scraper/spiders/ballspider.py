@@ -31,6 +31,7 @@ class BallspiderSpider(scrapy.Spider):
         home_court = (False, True)
         team = (away_team, home_team)
 
+
         for i in range(1, -2, -1):
             # away team is at abbrs[0] while home team is at abbrs[-1]
             abbr = abbrs[i].css("::text").get()
@@ -102,6 +103,7 @@ class BallspiderSpider(scrapy.Spider):
                 props["home_court"] = home_court[i]
                 props["date"] = date
                 props["team"] = team[i]
+                props["opponent"] = tuple(reversed(team))[i]
 
 
                 yield props

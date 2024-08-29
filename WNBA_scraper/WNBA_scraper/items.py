@@ -49,3 +49,4 @@ class PlayerProps(scrapy.Item):
     home_court = scrapy.Field()
     date = scrapy.Field()
     team = scrapy.Field()
+    opponent = scrapy.Field()
