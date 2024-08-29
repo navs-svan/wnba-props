@@ -9,19 +9,18 @@ class BallspiderSpider(scrapy.Spider):
 
     def parse(self, response):
         rows = response.css("table#schedule tbody tr")
-        rows = rows[0:1]
         for row in rows:
-            boxscore_url = row.css('[data-stat="box_score_text"] a::attr(href)').get()
-            # boxscore_url = "www.basketball-reference.com" + relative_url
-            game_data = {
-                "date": row.css('[data-stat="date_game"]::text').get(),
-                "away_team": row.css('[data-stat="visitor_team_name"] a::text').get(),
-                "home_team": row.css('[data-stat="home_team_name"] a::text').get(),
-            }
+            if boxscore_url := row.css('td:not([class*="iz"])[data-stat="box_score_text"] a::attr(href)').get():
+                # boxscore_url = "www.basketball-reference.com" + relative_url
+                game_data = {
+                    "date": row.css('[data-stat="date_game"]::text').get(),
+                    "away_team": row.css('[data-stat="visitor_team_name"] a::text').get(),
+                    "home_team": row.css('[data-stat="home_team_name"] a::text').get(),
+                }
 
-            yield response.follow(
-                boxscore_url, callback=self.parse_boxscore, cb_kwargs=game_data
-            )
+                yield response.follow(
+                    boxscore_url, callback=self.parse_boxscore, cb_kwargs=game_data
+                )
 
     def parse_boxscore(self, response, date, away_team, home_team):
 

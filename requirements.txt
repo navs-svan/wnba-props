@@ -3,3 +3,4 @@ scrapy
 ipython
 python-dotenv
 psycopg2
+scrapy-deltafetch

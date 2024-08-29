@@ -2,7 +2,9 @@ test.py
 .venv
 *.csv
 .env
+
 # SCRAPY
+deltafetch/
 
 /.vagrant
 /scrapy.iml

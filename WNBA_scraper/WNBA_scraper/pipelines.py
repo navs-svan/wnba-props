@@ -14,7 +14,7 @@ class WnbaScraperPipeline:
         adapter = ItemAdapter(item)
 
         # convert date to proper format
-        format = '%a, %B %d, %Y'
+        format = '%a, %b %d, %Y'
         date_value = adapter.get("date")
         date = datetime.datetime.strptime(date_value, format)
         adapter["date"] = date.date()
