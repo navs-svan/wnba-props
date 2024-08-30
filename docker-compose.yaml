@@ -1,0 +1,41 @@
+services:
+  scrapy:
+    image: test:scrapy
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+  #   networks:
+  #     - db_network
+  pgdatabase:
+    image: postgres:14
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_DATA}
+    volumes:
+      - "./postgres_data:/var/lib/postgresql/data:rw"
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    # networks:
+    #   - db_network
+  pgadmin:
+    image: dpage/pgadmin4
+    env_file:
+      - .env
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - "./pgadmin:/var/lib/pgadmin"
+    ports:
+      - "${PGADMIN_PORT}:80"
+    # networks:
+    #   - db_network
+
+    # networks:
+    #   db_network:
+
