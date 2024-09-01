@@ -10,5 +10,7 @@ RUN pip install -r requirements.txt
 
 COPY . /app/
 
-CMD ["python", "test.py"]
+WORKDIR /app/WNBA_scraper/WNBA_scraper
 
+CMD ["scrapy", "crawl", "ballspider"]
+# CMD ["python", "test.py"]

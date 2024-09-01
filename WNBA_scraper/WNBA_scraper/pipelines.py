@@ -9,12 +9,13 @@ from itemadapter import ItemAdapter
 import datetime
 import psycopg2
 
+
 class WnbaScraperPipeline:
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
 
         # convert date to proper format
-        format = '%a, %b %d, %Y'
+        format = "%a, %b %d, %Y"
         date_value = adapter.get("date")
         date = datetime.datetime.strptime(date_value, format)
         adapter["date"] = date.date()
@@ -26,24 +27,32 @@ class WnbaScraperPipeline:
 
         return item
 
+
 class PostgresPipeline:
 
     @classmethod
     def from_crawler(cls, crawler):
         return cls(crawler.settings)
-    
+
     def __init__(self, settings):
         # Start Connection
-        hostname = settings.get("DB_NAME")
+        hostname = settings.get("DB_HOST")
         username = settings.get("DB_USER")
         password = settings.get("DB_PASS")
         database = settings.get("DB_DATA")
-        
-        self.connection = psycopg2.connect(host=hostname, user=username, password=password, database=database)
+
+        self.connection = psycopg2.connect(
+            host=hostname,
+            user=username,
+            password=password,
+            database=database,
+            port=5432,
+        )
         self.cur = self.connection.cursor()
 
         # Create Table
-        self.cur.execute(""" 
+        self.cur.execute(
+            """ 
                 CREATE TABLE IF NOT EXISTS props(
                     id serial PRIMARY KEY,
                     date DATE,
@@ -82,13 +91,15 @@ class PostgresPipeline:
                     off_rating INTEGER DEFAULT 0,
                     def_rating INTEGER DEFAULT 0
             )              
-            """)
-        
+            """
+        )
+
         self.connection.commit()
 
     def process_item(self, item, spider):
         try:
-            self.cur.execute("""INSERT INTO props(
+            self.cur.execute(
+                """INSERT INTO props(
                             date,
                             home_court,
                             team,
@@ -160,45 +171,47 @@ class PostgresPipeline:
                                 %s,
                                 %s,
                                 %s
-                                )""", (
-                            item["date"],
-                            item["home_court"],
-                            item["team"],
-                            item["opponent"],
-                            item["name"],
-                            item["minutes"],
-                            item["field_goals"],
-                            item["fg_attempts"],
-                            item["fg_percent"],
-                            item["fg_three"],
-                            item["fg_three_attempts"],
-                            item["fg_three_percent"],
-                            item["rb_offensive"],
-                            item["rb_total"],
-                            item["assists"],
-                            item["steals"],
-                            item["blocks"],
-                            item["turnovers"],
-                            item["personal_fouls"],
-                            item["points"],
-                            item["plus_minus"],
-                            item["true_shoot_percent"],
-                            item["efg_percent"],
-                            item["three_pt_attempt"],
-                            item["ft_attempt"],
-                            item["rb_off_percent"],
-                            item["rb_def_percent"],
-                            item["rb_tot_percent"],
-                            item["assist_percent"],
-                            item["steal_percent"],
-                            item["block_percent"],
-                            item["turnover_percent"],
-                            item["usage_percent"],
-                            item["off_rating"],
-                            item["def_rating"]
-                            ))
+                                )""",
+                (
+                    item["date"],
+                    item["home_court"],
+                    item["team"],
+                    item["opponent"],
+                    item["name"],
+                    item["minutes"],
+                    item["field_goals"],
+                    item["fg_attempts"],
+                    item["fg_percent"],
+                    item["fg_three"],
+                    item["fg_three_attempts"],
+                    item["fg_three_percent"],
+                    item["rb_offensive"],
+                    item["rb_total"],
+                    item["assists"],
+                    item["steals"],
+                    item["blocks"],
+                    item["turnovers"],
+                    item["personal_fouls"],
+                    item["points"],
+                    item["plus_minus"],
+                    item["true_shoot_percent"],
+                    item["efg_percent"],
+                    item["three_pt_attempt"],
+                    item["ft_attempt"],
+                    item["rb_off_percent"],
+                    item["rb_def_percent"],
+                    item["rb_tot_percent"],
+                    item["assist_percent"],
+                    item["steal_percent"],
+                    item["block_percent"],
+                    item["turnover_percent"],
+                    item["usage_percent"],
+                    item["off_rating"],
+                    item["def_rating"],
+                ),
+            )
         except psycopg2.errors.InFailedSqlTransaction:
-           self.cur.execute("ROLLBACK")
+            self.cur.execute("ROLLBACK")
 
         self.connection.commit()
         return item

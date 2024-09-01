@@ -16,15 +16,13 @@ from pathlib import Path
 
 filepath = Path().resolve()
 
-dotenv_path = filepath / ".env"
+dotenv_path = filepath.parent.parent / ".env"
 load_dotenv(dotenv_path)
 
 DB_PASS = os.environ.get("DB_PASS")
 DB_HOST = os.environ.get("DB_HOST")
 DB_USER = os.environ.get("DB_USER")
 DB_DATA = os.environ.get("DB_DATA")
-
-
 
 BOT_NAME = "WNBA_scraper"
 

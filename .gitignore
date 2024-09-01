@@ -6,6 +6,7 @@ WNBA_scraper\WNBA_scraper\__pycache__
 WNBA_scraper\WNBA_scraper\spiders\__pycache__
 pgadmin
 postgres_data
+commands
 
 # SCRAPY
 deltafetch/
