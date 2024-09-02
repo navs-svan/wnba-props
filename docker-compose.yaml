@@ -41,6 +41,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - "./WNBA_scraper:/app/WNBA_scraper"
     networks:
       - db_network
     depends_on:
