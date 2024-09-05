@@ -14,7 +14,7 @@ services:
     networks:
       - db_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U root -d wnba"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -42,7 +42,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - "./WNBA_scraper:/app/WNBA_scraper"
+      - "./WNBA_scraper/.scrapy:/app/WNBA_scraper/.scrapy"
     networks:
       - db_network
     depends_on:
